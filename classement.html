@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classement - Outil JDLM</title>
+    <title>Classement - Outil Moyenne</title>
     <link rel="icon" href="https://raw.githubusercontent.com/Student-broken/student-broken.github.io/refs/heads/main/favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -389,7 +389,7 @@ async function loadLeaderboardData() {
     
     <div class="site-header-container">
         <a href="main.html" class="back-arrow" title="Retour">←</a>
-        <header class="site-header">Outil JDLM*</header>
+        <header class="site-header">Outil Moyenne*</header>
     </div>
     <main class="main-container">
         <div class="controls">
@@ -476,10 +476,10 @@ async function loadLeaderboardData() {
     // NOTE: L'URL doit pointer vers votre déploiement final (terminé par /exec).
     const LOGGING_API_URL = "https://script.google.com/macros/s/AKfycbwINdZPpR1Ft20UKbAqVt8Y91-AwLjFQ7IdxK4O4dNPw3mIRXCuaIsPVQVysF6YvnjKQw/exec";
     const HEARTBEAT_INTERVAL_MS = 1 * 60 * 1000; // 1 minute
-    const LOCAL_STORAGE_ID_KEY = 'jdlm_client_id'; // Clé de persistance de l'ID
+    const LOCAL_STORAGE_ID_KEY = 'Moyenne_client_id'; // Clé de persistance de l'ID
 
     // --- LOGIQUE DE PERSISTENCE DE L'ID CLIENT ---
-    const dataContainer = typeof jdlmData !== 'undefined' ? jdlmData : {};
+    const dataContainer = typeof MoyenneData !== 'undefined' ? MoyenneData : {};
     let userRandomCode = dataContainer.user_random || null;
 
     if (!userRandomCode) {
@@ -595,10 +595,10 @@ async function loadLeaderboardData() {
         }
 
         async function initializeDashboard() {
-            const localData = JSON.parse(localStorage.getItem('jdlmData')) || {};
+            const localData = JSON.parse(localStorage.getItem('MoyenneData')) || {};
             const userCode = (localData.nom || '').replace(/\s+/g, '').toLowerCase();
             const userRandom = localData.user_random; 
-            const selectedLevel = localStorage.getItem('jdlmNiveau');
+            const selectedLevel = localStorage.getItem('MoyenneNiveau');
 
             if (!selectedLevel || !userCode || !userRandom) {
                 dashboardContainer.innerHTML = `<div class="error-message"><strong>Erreur :</strong> Données utilisateur non trouvées. Retournez à la page principale, sélectionnez votre niveau, puis cliquez sur "Classement".</div>`;
@@ -613,7 +613,7 @@ async function loadLeaderboardData() {
                 const allData = await response.json();
                 if (allData.error) throw new Error(`Script error: ${allData.error}`);
 
-                const oldRanks = JSON.parse(localStorage.getItem('jdlmRankHistory')) || {};
+                const oldRanks = JSON.parse(localStorage.getItem('MoyenneRankHistory')) || {};
                 
                 document.getElementById('term-select').addEventListener('change', () => renderDashboard(allData, userRandom, selectedLevel, oldRanks));
                 renderDashboard(allData, userRandom, selectedLevel, oldRanks);
@@ -670,7 +670,7 @@ async function loadLeaderboardData() {
                 updateLeaderboardScroll(container);
             });
 
-            localStorage.setItem('jdlmRankHistory', JSON.stringify(currentRanks));
+            localStorage.setItem('MoyenneRankHistory', JSON.stringify(currentRanks));
         }
 
         function createStatWidgetHTML(widgetClass, currentKey, title, allUsersData, currentUserData, oldRanks) {
